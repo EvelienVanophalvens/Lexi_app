@@ -7,7 +7,6 @@ const LoginScreen = ({ navigation }) => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
-    const { id, setId } = useContext(UserContext);
 
     const handleLogin = () => {
 
@@ -38,8 +37,7 @@ const LoginScreen = ({ navigation }) => {
               const responseData = JSON.parse(text);
               console.log(responseData);
               if (responseData.Message == "member has been logged in successfully") {
-                const user = responseData.Data;
-
+                const user = responseData.Data
 
             }
             
