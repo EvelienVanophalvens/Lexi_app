@@ -8,6 +8,7 @@ import RegistrationScreen from './screens/Registration';
 import ProfilePictureScreen from './screens/ProfilePicture';
 import HomeScreen from './screens/Home';
 import SettingsScreen from './screens/Settings';
+import CallScreen from './screens/Call';
 
 
 
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="ProfilePicture" component={ProfilePictureScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="Call" component={CallScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>
