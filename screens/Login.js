@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {styles} from '../Styles.js';
+import UserContext from '../components/userContext';
 
 
 
@@ -9,53 +10,59 @@ const LoginScreen = ({ navigation }) => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
+    const { id, setId } = useContext(UserContext);
 
+  
     const handleLogin = () => {
 
-        if (phoneNumber.length === 0 || password.length === 0) {
-          alert("Required Field is Missing");
-        } else {
-          const insertAPIURL = "https://evelienvanophalvens.be/Lexi/login.php";
-          console.log("filed");
-          const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          };
-        
-          const data = {
-            phoneNumber: phoneNumber,
-            password: password
-          };
-          console.log("data", data);
-          fetch(insertAPIURL, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(data)
-          })
-          .then(response => response.text())
-          .then(text => {
-            console.log(text);
-            try {
-              const responseData = JSON.parse(text);
-              console.log(responseData);
-              if (responseData.Message == "member has been logged in successfully") {
-                const user = responseData.Data
-
+      if (phoneNumber.length === 0 || password.length === 0) {
+        alert("Required Field is Missing");
+      } else {
+        const insertAPIURL = "https://evelienvanophalvens.be/Lexi/login.php";
+        console.log("filed");
+        const headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        };
+      
+        const data = {
+          phoneNumber: phoneNumber,
+          password: password
+        };
+        console.log("data", data);
+        fetch(insertAPIURL, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(data)
+        })
+        .then(response => response.text())
+        .then(text => {
+          console.log(text);
+          try {
+            const responseData = JSON.parse(text);
+            console.log(responseData);
+            if (responseData.Message == "member has been logged in successfully") {
+              const user = responseData.Data;
+                  console.log("Logged in successfully!");
+                  navigation.navigate('Home');
+                  setId(responseData.Data.id); // save the id in UserContext;
+            } else {
+              console.log("Incorrect username or password");
+              alert("Incorrect username or password 2");
             }
-            
 
-        }
-            catch (error) {
-              console.log(error);
-              alert("Something went wrong!");
-            }
-          })
-          .catch((error) => {
-            console.log("Error", error);
+
+          } catch (error) {
+            console.log(error);
             alert("Something went wrong!");
-          });
-        }
-        }
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+          alert("Something went wrong!");
+        });
+      }
+      }
     
 
 return(
@@ -100,7 +107,7 @@ return(
 
     <View style={styles.registration} >
       <Text style={[styles.bodySmall]}>Don't have an account yet?
-        <Text style={[styles.bodySmall, styles.txtPurple]} onPress={() => navigation.navigate('registration')}> create an account</Text>
+        <Text style={[styles.bodySmall, styles.txtPurple]} onPress={() => navigation.navigate('Registration')}> create an account</Text>
       </Text>
     </View>
     </View>
