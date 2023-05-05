@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import {styles} from '../Styles.js';
 
 
 
@@ -67,26 +69,28 @@ return(
             source={require('../assets/img/logo.png')}
         />
     </View>
-        <Text style={[styles.label, styles.font]}>Phone number</Text>
+        <Text style={[styles.bodyBig, styles.label]}>Phone number</Text>
         <TextInput
             name={"phoneNumber"}
             keyboardType="numeric"
             placeholder={"Phone number"}
-            style={[styles.txtStyle, styles.txtStyle2, styles.font]}
+            placeholderTextColor="black"
+            style={styles.input}
             onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
             />
-        <Text style={[styles.label, styles.font]}>Password</Text>
+        <Text style={[styles.bodyBig, styles.label]}>Password</Text>
         <TextInput
             name={"password"}
             placeholder={"Password"}
-            style={[styles.txtStyle, styles.font]}
+            placeholderTextColor="black"
+            style={styles.input}
             secureTextEntry={true}
             onChangeText={password => setPassword(password)}
             />
         
          <TouchableWithoutFeedback onPress={() => navigation.navigate('passwordForgot')}>
             <View style={styles.forgotPassword}>
-                <Text style={ styles.font}>Forgot password?</Text>
+                <Text style={styles.bodySmall}>Forgot password?</Text>
             </View>
         </TouchableWithoutFeedback> 
         <View style={[styles.button2, styles.font, styles.test]} >
@@ -95,8 +99,8 @@ return(
 
 
     <View style={styles.registration} >
-      <Text style={[styles.registrationText, styles.font]}>Don't have an account yet?
-        <Text style={[styles.registrationText2, styles.font]} onPress={() => navigation.navigate('registration')}> create an account</Text>
+      <Text style={[styles.bodySmall]}>Don't have an account yet?
+        <Text style={[styles.bodySmall, styles.txtPurple]} onPress={() => navigation.navigate('registration')}> create an account</Text>
       </Text>
     </View>
     </View>
@@ -104,97 +108,6 @@ return(
 );
 }
 
-const styles = StyleSheet.create({
-  font: {
-    fontFamily: 'nunito',
-    },
 
-  viewStyle: {
-    flex: 1,
-    padding: 60,
-    marginTop: 20,
-
-
-  },
-  txtStyle: {
-    borderWidth: 1,
-    borderColor: "#D0D5D9",
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 16,
-  },
-
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontWeight: 'bold',
-    color: 'black',
-    },
-
-  txtStyle2: {
-    marginBottom: 30,
-    },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#7D4CFF",
-    padding: 22.5,
-    width: 190,
-    color: 'white',
-    textAlign: 'center',
-    borderRadius: 5,
-    fontWeight: 'bold',
-    },
-
-    button2: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-
-    login: {
-        flex: 1,
-    },
-
-    registration: {
-        marginLeft:-40,
-        marginRight:-40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 150,
-    },
-
-    registrationText: {
-        fontSize: 18,
-    },
-
-    registrationText2:{
-        color: '#7D4CFF',
-        fontSize: 18,
-    },
-
-    logoView:{
-        width: 100,
-        height: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 30,
-    },
-    logoView:{
-
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 30,
-    },
-
-    forgotPassword:{
-        marginTop: 10,
-        marginBottom: 60,
-        borderBottomColor: '#00000',
-        borderBottomWidth: 1,
-        alignSelf: 'flex-start',
-    },
-
-    
-    
-});
 
 export default LoginScreen;
