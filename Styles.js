@@ -35,23 +35,30 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         flex: 1,
-        marginRight:-60,
         fontFamily: 'recoleta',
+    },
+
+    titleMargin1:{
+        marginLeft: -40,
+    },
+
+    titleMargin2:{
+        marginRight: -30,
     },
 
 
     bodyBig: {
-        fontSize: 25,
-        color: "black",
-    },
-
-    body: {
         fontSize: 20,
         color: "black",
     },
 
+    body: {
+        fontSize: 17,
+        color: "black",
+    },
+
     bodySmall: {
-        fontSize: 16,
+        fontSize: 15,
         color: "black",
     },
 
@@ -85,6 +92,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         color: 'black',
     },
+
 
     forgotPassword: {
         marginBottom: 60,
@@ -195,6 +203,55 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    marginBottom: {
+        marginBottom: 20,
+    },
+
+    Input: {
+        width: 230,
+        fontSize: 16,
+        color: 'black',
+        borderBottomWidth: 1,
+    },
+
+    content: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'center',
+    },
+
+    marginTop: {
+        marginTop: 40,
+    },
+
+    
+    dropdownOptions: {
+        marginTop: 10,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#D0D5D9',
+    },
+
+    input2:{
+        width: '100%',
+        borderWidth: 1,
+        padding: 10,
+        borderRadius: 10,
+        borderColor: '#D0D5D9',
+    },
+
+
+    dropdownOptions: {
+        marginTop: 10,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: '#D0D5D9',
+    },
+
+    padding: {
+        padding: 10,
+    },
 
 
 

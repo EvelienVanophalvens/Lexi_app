@@ -67,9 +67,9 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.View}>
         <View>
           <View style={styles.titlePurple}>
-            <Text style={styles.titleWhite}>Friends</Text>
+            <Text style={[styles.titleWhite, styles.titleMargin2]}>Friends</Text>
             <Image source={require('../assets/img/iconFriends.png')} style={styles.icon} />
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('settings')}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Settings')}>
               <Image source={require('../assets/img/iconSettings.png')} style={styles.icon}/>
             </TouchableWithoutFeedback>
           </View>
@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
               id={item.id}
               name={item.firstname}
               image={item.profilePicture}
-              onSelectedFriend={(id) => navigation.navigate('call', {id: id})}
+              onSelectedFriend={(id) => navigation.navigate('Call', {id: id})}
             />
           )}
         />
@@ -109,7 +109,7 @@ const HomeScreen = ({ navigation }) => {
             id={item.id}
             name={item.firstname}
             image={item.profilePicture}
-            onSelectedFriend={(id) => navigation.navigate('call', {id: id})}
+            onSelectedFriend={(id) => navigation.navigate('Call', {id: id})}
           />
         )}
       />
