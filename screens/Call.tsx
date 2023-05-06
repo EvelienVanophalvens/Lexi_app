@@ -16,11 +16,14 @@ import Voice, {
 import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import { map, filter } from "rxjs/operators";
 
-
-
-
+import Torch from 'react-native-torch';
+import Switch from '../components/switch';
 
 function CallScreen() {
+
+  const [isTorchOn, setIsTorchOn] = useState(false);
+
+  Torch.switchState(isTorchOn);
 
   const [orientation, setOrientation] = useState('');
   const [recognized, setRecognized] = useState('');
@@ -31,10 +34,7 @@ function CallScreen() {
   const [results, setResults] = useState([]);
   const [partialResults, setPartialResults] = useState([]);
 
-
-    
-
-  setUpdateIntervalForType(SensorTypes.accelerometer, 400); // defaults to 100ms
+  setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
 
   function getPhoneOrientation({ x, y, z }) {
     const threshold = 2; // adjust this value as needed
@@ -48,7 +48,6 @@ function CallScreen() {
     }
   }
 
-  
   const subscription = accelerometer
     .pipe(
       map(({ x, y, z }) => ({
@@ -59,29 +58,19 @@ function CallScreen() {
         orientation: getPhoneOrientation({ x, y, z }),
       })),
     )
-    .subscribe(
-      ({ x, y, z, total, orientation }) =>
-
-      error => {
-        console.log("The sensor is not available");
-      }
-    );
-
- 
-
-
+    .subscribe((accelerometer) => {
+      console.log(accelerometer);
+    });
 
   useEffect(() => {
     console.log("orientation", orientation);
 
     if (orientation === "landscape") {
-      _clearState();
       Voice.start("en-US");
-      console.log("Voice started")
+      console.log("Voice started");
     } else {
       Voice.stop();
     }
-  
 
     Voice.onSpeechStart = onSpeechStart;
     Voice.onSpeechRecognized = onSpeechRecognized;
@@ -145,6 +134,14 @@ function CallScreen() {
     setResults([]);
     setPartialResults([]);
   };
+
+  if (results[0] === "hello") {
+    Torch.switchState(true);
+  } 
+
+  if (results[0] === "cancel") {
+    Torch.switchState(false);
+  }
 
 
 
