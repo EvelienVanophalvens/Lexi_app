@@ -17,7 +17,11 @@ import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-nati
 import { map, filter } from "rxjs/operators";
 
 import Torch from 'react-native-torch';
-import Switch from '../components/switch';
+import Tts from 'react-native-tts';
+
+
+
+
 
 function CallScreen() {
 
@@ -65,9 +69,25 @@ function CallScreen() {
   useEffect(() => {
     console.log("orientation", orientation);
 
+    
     if (orientation === "landscape") {
-      Voice.start("en-US");
-      console.log("Voice started");
+      Tts.getInitStatus().then(() => {
+        Tts.setDefaultLanguage('en-US');
+        Tts.setDefaultRate(0.5);
+        Tts.setDefaultPitch(1.0);
+        Tts.speak('Say one of your words!')
+          .then(() => {
+            Voice.start('en-US');
+            console.log("Voice started");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, (err) => {
+        if (err.code === 'no_engine') {
+          Tts.requestInstallEngine();
+        }
+      });
     } else {
       Voice.stop();
     }
@@ -148,32 +168,6 @@ function CallScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome to React Native Voice!</Text>
-      <Text style={styles.instructions}>
-        Press the button and start speaking.
-      </Text>
-      <Text style={styles.stat}>{`Started: ${started}`}</Text>
-      <Text style={styles.stat}>{`Recognized: ${recognized}`}</Text>
-      <Text style={styles.stat}>{`Volume: ${volume}`}</Text>
-      <Text style={styles.stat}>{`Error: ${error}`}</Text>
-      <Text style={styles.stat}>Results</Text>
-      {results.map((result, index) => {
-        return (
-          <Text key={`result-${index}`} style={styles.stat}>
-            {result}
-          </Text>
-        );
-      })}
-      <Text style={styles.stat}>Partial Results</Text>
-      {partialResults.map((result, index) => {
-        return (
-          <Text key={`partial-result-${index}`} style={styles.stat}>
-            {result}
-          </Text>
-        );
-      })}
-      <Text style={styles.stat}>{`End: ${end}`}</Text>
-      
     </View>
   );
 }
