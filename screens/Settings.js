@@ -82,6 +82,24 @@ const SettingsScreen = ({ navigation }) => {
         });
       }
 
+      const deleteAccount = () => {
+        console.log(id);
+        fetch('https://evelienvanophalvens.be/Lexi/deleteAccount.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+            }),
+        })
+
+        navigation.navigate('Login');
+    }
+
+
+
+
 
 
 
@@ -155,7 +173,7 @@ const SettingsScreen = ({ navigation }) => {
             </View>
             <View style={[styles.button2, styles.font]} >
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')} ><Text style={[styles.button, styles.font, styles.marginBottom]}>Logout</Text></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')} ><Text style={[styles.bodyRed, styles.marginBottom]}>Delete Account</Text></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={deleteAccount} ><Text style={[styles.font, styles.txtRed, styles.marginBottom, styles.marginTop]}>Delete Account</Text></TouchableWithoutFeedback>
         </View>
 
         </ScrollView>

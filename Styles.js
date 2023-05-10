@@ -314,6 +314,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginVertical: 10,
+    },
+
+    icon2:{
+        marginHorizontal: 10,
+        height: 30,
+        width: 20,
+        resizeMode: 'contain',
+    },
+
+    
+    
+
 
 });
 
