@@ -8,7 +8,6 @@ const Friends = (props) => {
 
 
   return (
-    <TouchableWithoutFeedback onPress={() => props.onSelectedFriend(props.id, props.image, props.name)}>
     <View style={styles.listItem}>
 
           <View style={styles.leftContainer}>
@@ -16,10 +15,11 @@ const Friends = (props) => {
             <Text style={styles.body}>{props.name}</Text>
           </View>
           <View style={styles.rightContainer}>
-            <Image source={require('../assets/img/call.png')} style={ styles.icon}/>
+            <TouchableWithoutFeedback onPress={() => props.onDeleteFriend()}>
+                <Image source={require('../assets/img/reject.png')} style={ styles.icon}/>
+            </TouchableWithoutFeedback>    
           </View>
     </View>
-    </TouchableWithoutFeedback>
   );
 }
 

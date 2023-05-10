@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 
 import Voice, {
@@ -18,6 +19,9 @@ import { map, filter } from "rxjs/operators";
 import Sound from 'react-native-sound';
 import Torch from 'react-native-torch';
 import Tts from 'react-native-tts';
+
+import UserContext from '../components/userContext';
+import {styles} from '../Styles';
 
 
 var alarm = new Sound('alarm.wav', Sound.MAIN_BUNDLE, (error) => {
@@ -33,9 +37,39 @@ alarm.getNumberOfLoops
 
 
 
-function CallScreen() {
+function CallScreen({ route, navigation }) {
+  const { name, image } = route.params;
+
+  const { id } = useContext(UserContext);
+
+  const [codeWord, setCodeWord] = useState([]);
+  const [codeWordIndex, setCodeWordIndex] = useState();
 
  
+  useEffect(() => {
+    fetch('https://evelienvanophalvens.be/Lexi/allUserCodeWords.php', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+
+        user: id
+    
+    }),
+    })
+    .then(response => response.json())
+    .then(data => {
+    setCodeWord(data.result);
+    console.log(data.result);
+    })
+    .catch(error => {
+    console.error(error);
+    });
+}, []);
+
+
+
 
   const [isTorchOn, setIsTorchOn] = useState(false);
 
@@ -170,75 +204,68 @@ function CallScreen() {
     setPartialResults([]);
   };
 
-  if (results[0] === "dude") {
-    Torch.switchState(true);
-  } 
+  
+  console.log(codeWord);
+  console.log(results[0]);
 
-  if (results[0] === "cancel") {
-    Torch.switchState(false);
-    alarm.stop;
-  }
+  if (codeWord && codeWord.length > 0) {
+    if (results && results.length > 0) {
+      const spokenWord = results[0];
+      const matchingCodeWord = codeWord.find((code) => code.codeWord.toLowerCase() === spokenWord.toLowerCase());
   
-  if(results[0] === "hello"){
-   
-      // loaded successfully
-      console.log('duration in seconds: ' + alarm.getDuration() + 'number of channels: ' + alarm.getNumberOfChannels());
-  
-      alarm.play((success) => {
-        if (success) {
-          console.log('successfully finished playing');
-        } else {
-          console.log('playback failed due to audio decoding errors');
-        }
+      if (matchingCodeWord) {
+        console.log(matchingCodeWord);
+        const codeWordId = matchingCodeWord.codeWordId;
+        const setting = matchingCodeWord.setting;
+
+        if(setting == 0){
+          Torch.switchState(true);
+        } else if(setting == 1){
+            // loaded successfully
+          console.log('duration in seconds: ' + alarm.getDuration() + 'number of channels: ' + alarm.getNumberOfChannels());
+      
+          alarm.play((success) => {
+            if (success) {
+              console.log('successfully finished playing');
+            } else {
+              console.log('playback failed due to audio decoding errors');
+            }
       });
   
       alarm.setNumberOfLoops(-1);
   
-  
+        }
 
+      } else {
+        console.log("No matching codeWord found");
+      }
+    } else {
+      console.log("No spoken words detected");
+    }
   }
 
 
 
   return (
-    <View style={styles.container}>
-      <Text>{results}</Text>
+    <View style={styles.View}>
+      <View style={styles.titlePurpleCalling}>
+        <Text style={[styles.titleWhite]}>{name}</Text>
+        <Text style={styles.bodySmallWhite}>is calling</Text>
+      </View>
+      <View style={styles.viewStyle}>
+        <Image style={styles.callingImage} source={{ uri: "https://evelienvanophalvens.be/Lexi/uploads/" + image }} />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <View  style={styles.decline} >
+              <Image source={require('../assets/img/decline.png')} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    width: 50,
-    height: 50,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  action: {
-    textAlign: 'center',
-    color: '#0000FF',
-    marginVertical: 5,
-    fontWeight: 'bold',
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  stat: {
-    textAlign: 'center',
-    color: '#B0171F',
-    marginBottom: 1,
-  },
-});
+
 
 export default CallScreen;

@@ -9,6 +9,8 @@ import ProfilePictureScreen from './screens/ProfilePicture';
 import HomeScreen from './screens/Home';
 import SettingsScreen from './screens/Settings';
 import CallScreen from './screens/Call';
+import FriendRequest from './screens/friendRequest';
+import FriendsScreen from './screens/Friends';
 
 
 
@@ -26,6 +28,9 @@ const App = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Call" component={CallScreen} />
+        <Stack.Screen name="friendRequest" component={FriendRequest} />
+        <Stack.Screen name="Friends" component={FriendsScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>

@@ -62,8 +62,17 @@ const styles = StyleSheet.create({
         color: "black",
     },
 
+    bodySmallWhite: {
+        fontSize: 15,
+        color: "white",
+    },
+
     txtPurple: {
         color: "#7D4CFF",
+    },
+
+    txtRed: {
+        color: "#FF0000",
     },
 
 
@@ -241,6 +250,21 @@ const styles = StyleSheet.create({
         borderColor: '#D0D5D9',
     },
 
+    input3:{
+        width: '100%',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        borderColor: '#D0D5D9',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+
+    input3txt:{
+        color: 'black',
+    },
+
 
     dropdownOptions: {
         marginTop: 10,
@@ -253,6 +277,42 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 
+    titlePurpleCalling: {
+        marginBottom: 30,
+        margin: -20,
+        backgroundColor: '#7D4CFF',
+        padding: 20,
+        borderRadius: 10,
+        height: 100,
+        flexDirection: 'column',
+        alignItems: "center",
+
+    },
+
+    callingImage: {
+        width: 200,
+        height: 200,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 120,
+    },
+
+    decline: {
+        backgroundColor: '#FF4C4C',
+        padding: 22.5,
+        width: 90,
+        height: 90,
+        color: 'white',
+        textAlign: 'center',
+        borderRadius: 50,
+        fontWeight: 'bold',
+    },
+
+    rightContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
 
 
 });

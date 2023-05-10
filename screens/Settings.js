@@ -13,6 +13,7 @@ import Dropdown from '../components/dropdown';
 const SettingsScreen = ({ navigation }) => {
     const { id } = useContext(UserContext);
     const [userInfo, setUserInfo] = useState([]);
+    const [codeWords, setCodeWords] = useState([]);
 
     useEffect(() => {
         fetch('https://evelienvanophalvens.be/Lexi/userInfo.php', {
@@ -32,6 +33,28 @@ const SettingsScreen = ({ navigation }) => {
         console.error(error);
         });
     }, []);
+
+    
+    
+    useEffect(() => {
+        fetch('https://evelienvanophalvens.be/Lexi/codeWords.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+        })
+        .then(response => response.json())
+        .then(data => {
+        setCodeWords(data.Data);
+        console.log(data.Data);
+        })
+        .catch(error => {
+        console.error(error);
+        });
+    }, []);
+
+
 
     const updateUserInfo = (key, value) => {
         const updatedUserInfo = { ...userInfo, [key]: value };
@@ -110,16 +133,29 @@ const SettingsScreen = ({ navigation }) => {
                     <Text style={[styles.subTitle]}>Secret words</Text>
                     <Dropdown
                         label = "Flashlight"
+                        options = {codeWords}
+                        user = {id}
+                        setting = {0}
                     />
                     <Dropdown
                         label = "Sound Alarm"
+                        options = {codeWords}
+                        user = {id}
+                        setting = {1}
+
+
                     />
                     <Dropdown
                         label = "Emergency"
+                        options = {codeWords}
+                        user = {id}
+                        setting = {2}
+
                     />
             </View>
             <View style={[styles.button2, styles.font]} >
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')} ><Text style={[styles.button, styles.font, styles.marginBottom]}>Logout</Text></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Login')} ><Text style={[styles.bodyRed, styles.marginBottom]}>Delete Account</Text></TouchableWithoutFeedback>
         </View>
 
         </ScrollView>
