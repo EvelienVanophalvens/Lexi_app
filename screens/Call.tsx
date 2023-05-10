@@ -15,15 +15,27 @@ import Voice, {
 
 import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
 import { map, filter } from "rxjs/operators";
-
+import Sound from 'react-native-sound';
 import Torch from 'react-native-torch';
 import Tts from 'react-native-tts';
 
+
+var alarm = new Sound('alarm.wav', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    console.log('failed to load the sound', error);
+    return;
+  }
+
+});
+
+alarm.getNumberOfLoops
 
 
 
 
 function CallScreen() {
+
+ 
 
   const [isTorchOn, setIsTorchOn] = useState(false);
 
@@ -71,12 +83,14 @@ function CallScreen() {
 
     
     if (orientation === "landscape") {
+      alarm.stop();
       Tts.getInitStatus().then(() => {
         Tts.setDefaultLanguage('en-US');
         Tts.setDefaultRate(0.5);
         Tts.setDefaultPitch(1.0);
         Tts.speak('Say one of your words!')
           .then(() => {
+            _clearState();
             Voice.start('en-US');
             console.log("Voice started");
           })
@@ -144,6 +158,7 @@ function CallScreen() {
     setVolume(e.value);
   };
 
+ 
 
   const _clearState = () => {
     setRecognized('');
@@ -155,19 +170,39 @@ function CallScreen() {
     setPartialResults([]);
   };
 
-  if (results[0] === "hello") {
+  if (results[0] === "dude") {
     Torch.switchState(true);
   } 
 
   if (results[0] === "cancel") {
     Torch.switchState(false);
+    alarm.stop;
   }
+  
+  if(results[0] === "hello"){
+   
+      // loaded successfully
+      console.log('duration in seconds: ' + alarm.getDuration() + 'number of channels: ' + alarm.getNumberOfChannels());
+  
+      alarm.play((success) => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+  
+      alarm.setNumberOfLoops(-1);
+  
+  
 
+  }
 
 
 
   return (
     <View style={styles.container}>
+      <Text>{results}</Text>
     </View>
   );
 }
