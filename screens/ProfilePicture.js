@@ -57,7 +57,7 @@ const ProfilePictureScreen = ({ navigation, route }) => {
             try {
                 const responseData = JSON.parse(text);
                 console.log (responseData.Message);
-                navigation.navigate('Login');
+                navigation.navigate('Tutorial1');
             } catch (error) {
                 alert("Error parsing response: " + error.message);
             }
@@ -69,7 +69,7 @@ const ProfilePictureScreen = ({ navigation, route }) => {
 
 
 return(
-<View style={styles.viewStyle}>
+<View style={[styles.viewStyle, styles.background]}>
 <Text style={styles.title}>Choose profile picture</Text> 
 
 {selectedImage && <Image source={{ uri: selectedImage.uri }} style={ styles.profileImg} />  }

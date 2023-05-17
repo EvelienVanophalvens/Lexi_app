@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Image } from 'react-native';
+import { ScrollView, Text, View, TextInput, TouchableWithoutFeedback, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {styles} from '../Styles.js';
 import UserContext from '../components/userContext';
@@ -66,9 +66,9 @@ const LoginScreen = ({ navigation }) => {
     
 
 return(
-<View style={styles.viewStyle}>
 
-    
+<View style={styles.viewStyle}>
+<View style={styles.background}>
     <View style={styles.login} >
         <View style={styles.logoView}>
         <Image
@@ -111,6 +111,7 @@ return(
       </Text>
     </View>
     </View>
+</View>
 </View>
 );
 }

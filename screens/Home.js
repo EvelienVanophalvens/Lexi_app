@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, FlatList, TouchableWithoutFeedback, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, FlatList, TouchableWithoutFeedback, Pressable, Image, TouchableOpacity } from 'react-native';
 import UserContext from '../components/userContext';
 import Friends from '../components/friends';
 import Switch from '../components/switch';
@@ -63,17 +63,17 @@ const HomeScreen = ({ navigation }) => {
 
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.background}>
       <View style={styles.View}>
         <View>
           <View style={styles.titlePurple}>
             <Text style={[styles.titleWhite, styles.titleMargin2]}>Lexi</Text>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('Friends')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
               <Image source={require('../assets/img/iconFriends.png')} style={styles.icon} />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('Settings')}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
               <Image source={require('../assets/img/iconSettings.png')} style={styles.icon}/>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.switchView}>
@@ -87,6 +87,17 @@ const HomeScreen = ({ navigation }) => {
 
 
         </View>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('CallLexi')}>
+          <View style={[styles.listItem, styles.friends]} >
+          <View style={styles.leftContainer}>
+            <Image source={require('../assets/img/profile.png')} style={ styles.img}/>
+            <Text style={styles.body}>Lexi</Text>
+          </View>
+          <View style={styles.rightContainer}>
+            <Image source={require('../assets/img/call.png')} style={ styles.icon}/>
+          </View>
+    </View>
+    </TouchableWithoutFeedback>
         <Text style={[styles.subTitle]}>Available</Text>
         <FlatList
           style={styles.friends}

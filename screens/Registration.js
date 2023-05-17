@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native';
 import * as bcrypt from 'bcryptjs';
 import {styles} from '../Styles.js';
 
@@ -62,8 +62,13 @@ if (firstname.length === 0 || lastname.length === 0 || phoneNumber.length ===0 |
 }
 
 return(
-<View style={styles.View}>
+  
+<View style={[styles.View, styles.background]}>
+
   <KeyboardAvoidingView behavior="position" enabled keyboardVerticalOffset={20}>
+  <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+    <Image style={[styles.icon3, styles.marginBottom]} source={require('../assets/img/backArrow_black.png')} />
+  </TouchableOpacity>
   <Text style={styles.title}>Create a new account</Text>
   <Text style={[styles.label, styles.bodyBig]}>phonenumber</Text>
   <TextInput

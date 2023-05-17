@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, FlatList, TextInput, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
 import UserContext from '../components/userContext';
 import Friends from '../components/friends2';
 import SearchResults from '../components/friends3';
@@ -105,10 +105,13 @@ const FriendsScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <View style={styles.View}>
+      <View style={[styles.View, styles.background]}>
         <View>
           <View style={styles.titlePurple}>
-            <Text style={[styles.titleWhite]}>Friends</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <Image style={styles.icon3} source={require('../assets/img/backArrow.png')} />
+        </TouchableOpacity>
+            <Text style={[styles.titleWhite, styles.titleMargin1]}>Friends</Text>
           </View>
         </View>
         <View style={styles.input3}>
@@ -124,7 +127,7 @@ const FriendsScreen = ({ navigation }) => {
         </View>
         <FlatList
           style={styles.friends}
-          numColumns={1}
+          numColumns={0}
           data={searchResults}
           renderItem={({ item }) => (
             <SearchResults

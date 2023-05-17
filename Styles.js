@@ -5,8 +5,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 60,
-        marginTop: 20,
+        padding: 80,
+        backgroundColor: "#EEF3FC",
     },
 
     title: {
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft:-10,
         marginRight: -10,
+        fontFamily: 'RecoletaAlt-Black',
     },
 
     titlePurple: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         flex: 1,
-        fontFamily: 'recoleta',
+        fontFamily: 'RecoletaAlt-Black',
     },
 
     titleMargin1:{
@@ -50,25 +51,30 @@ const styles = StyleSheet.create({
     bodyBig: {
         fontSize: 20,
         color: "black",
+        fontFamily: 'Nunito-Regular',
     },
 
     body: {
         fontSize: 17,
         color: "black",
+        fontFamily: 'Nunito-Regular',
     },
 
     bodySmall: {
         fontSize: 15,
         color: "black",
+        fontFamily: 'Nunito-Regular',
     },
 
     bodySmallWhite: {
         fontSize: 15,
         color: "white",
+        fontFamily: 'Nunito-Regular',
     },
 
     txtPurple: {
         color: "#7D4CFF",
+        fontFamily: 'Nunito-SemiBold',
     },
 
     txtRed: {
@@ -145,14 +151,20 @@ const styles = StyleSheet.create({
         marginRight:-40,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 150,
+        marginTop: 220,
 
     },
 
     View: {
         flex: 1,
         padding: 60,
-        marginTop: 20,
+        backgroundColor: "#EEF3FC",
+
+    },
+
+    background:{
+        backgroundColor: "#EEF3FC",
+
     },
 
     profileImg: {
@@ -180,6 +192,7 @@ const styles = StyleSheet.create({
         color: 'white',
         margin: -20,
         marginTop: 30,
+        fontFamily: 'Nunito-SemiBold',
     },
 
     friends: {
@@ -327,7 +340,49 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
 
+  
+    alignCenter: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+
+    iconBig: {
+        height: 50,
+        width: 50,
+        resizeMode: 'contain',
+    },
+
+    marginTop2: {
+        marginTop: 90,
+    },
+
     
+    marginTop3: {
+        marginTop: 160,
+    },
+
+    title2:{
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'black',
+        marginBottom: 20,
+        fontFamily: 'ricoleta',
+    },
+
+    marginTop4: {
+        marginTop: 100,
+    },
+    marginRight:{
+        marginLeft: 40,
+    },
+
+    icon3:{
+        height: 30,
+        width: 30,
+        resizeMode: 'contain',
+        marginRight: 20,
+    },
     
 
 

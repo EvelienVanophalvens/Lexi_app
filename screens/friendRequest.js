@@ -80,7 +80,7 @@ const FriendRequest = ({ navigation }) => {
     
 
     return (
-        <View style={styles.View}>
+        <View style={[styles.View, styles.background]}>
             <View style={styles.titlePurple}>
             <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
                 <Image style={styles.icon} source={require('../assets/img/backArrow.png')} />

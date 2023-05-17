@@ -1,5 +1,5 @@
 import react, {useContext, useEffect, useState} from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import UserContext from '../components/userContext';
 import {styles} from '../Styles.js';
 
@@ -104,12 +104,12 @@ const SettingsScreen = ({ navigation }) => {
 
 
     return (
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={[styles.scrollView, styles.background]}>
             <View style={styles.View}>
                 <View  style={styles.titlePurple}>
-                <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-                    <Image style={styles.icon} source={require('../assets/img/backArrow.png')} />
-                </TouchableWithoutFeedback>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                    <Image style={styles.icon3} source={require('../assets/img/backArrow.png')} />
+                </TouchableOpacity>
                     <Text style={[styles.titleWhite, styles.titleMargin1]}>Settings</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={() => navigation.navigate('friendRequest')}>

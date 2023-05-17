@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-  StyleSheet,
+  ScrollView,
   Text,
   View,
   Image,
@@ -247,7 +247,7 @@ function CallScreen({ route, navigation }) {
 
 
   return (
-    <View style={styles.View}>
+    <View style={[styles.background, styles.View]}>
       <View style={styles.titlePurpleCalling}>
         <Text style={[styles.titleWhite]}>{name}</Text>
         <Text style={styles.bodySmallWhite}>is calling</Text>
@@ -262,7 +262,7 @@ function CallScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+      </View>
   );
 }
 
