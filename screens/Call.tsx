@@ -109,15 +109,14 @@ function CallScreen({ route, navigation }) {
       })),
     )
     .subscribe((accelerometer) => {
-      console.log(accelerometer);
     });
 
   useEffect(() => {
-    console.log("orientation", orientation);
 
     
     if (orientation === "landscape") {
       alarm.stop();
+
       Tts.getInitStatus().then(() => {
         Tts.setDefaultLanguage('en-US');
         Tts.setDefaultRate(0.5);
@@ -154,27 +153,22 @@ function CallScreen({ route, navigation }) {
   }, [orientation]);
 
   const onSpeechStart = (e: any) => {
-    console.log('onSpeechStart: ', e);
     setStarted('√');
   };
 
   const onSpeechRecognized = (e: SpeechRecognizedEvent) => {
-    console.log('onSpeechRecognized: ', e);
     setRecognized('√');
   };
 
   const onSpeechEnd = (e: any) => {
-    console.log('onSpeechEnd: ', e);
     setEnd('√');
   };
 
   const onSpeechError = (e: SpeechErrorEvent) => {
-    console.log('onSpeechError: ', e);
     setError(JSON.stringify(e.error));
   };
 
   const onSpeechResults = (e: SpeechResultsEvent) => {
-    console.log('onSpeechResults: ', e);
     if (e.value && e.value.length > 0) {
       const firstWord = e.value[0].split(' ')[0]; // split and take the first word
       setResults([firstWord]);
@@ -204,6 +198,7 @@ function CallScreen({ route, navigation }) {
     setPartialResults([]);
   };
 
+  let said = false;
   
   console.log(codeWord);
   console.log(results[0]);
@@ -212,9 +207,28 @@ function CallScreen({ route, navigation }) {
     if (results && results.length > 0) {
       const spokenWord = results[0];
       const matchingCodeWord = codeWord.find((code) => code.codeWord.toLowerCase() === spokenWord.toLowerCase());
+
+      console.log(spokenWord + ":spokenWord");
+
+      if(spokenWord == "cancel"){
+        Voice.stop();
+        _clearState();
+        if(!said){
+        console.log("you have said cancel");
+        Tts.speak('The call has been cancelled.')
+        .then(() => {
+
+
+        })
+        .catch((error) => {
+          console.log(error);
+        }
+        )
+        said = true;
+      }
+      }
   
       if (matchingCodeWord) {
-        console.log(matchingCodeWord);
         const codeWordId = matchingCodeWord.codeWordId;
         const setting = matchingCodeWord.setting;
 
@@ -234,13 +248,45 @@ function CallScreen({ route, navigation }) {
   
       alarm.setNumberOfLoops(-1);
   
+        }else if(setting == 2){
+          
+          let isCodeExecuted = false;
+
+          if (!isCodeExecuted) {
+            Tts.getInitStatus()
+              .then(() => {
+                Tts.setDefaultLanguage('en-US');
+                Tts.setDefaultRate(0.5);
+                Tts.setDefaultPitch(1.0);
+                Tts.speak('You have called the police. Say cancel to cancel the call.')
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }, (err) => {
+                if (err.code === 'no_engine') {
+                  Tts.requestInstallEngine();
+                }
+              });
+
+              _clearState();
+              Voice.start('en-US');
+              console.log("Voice started");
+          
+            isCodeExecuted = true;
+          }
+          
+          console.log("hello");
+
+          
+
+
         }
+        
+
 
       } else {
-        console.log("No matching codeWord found");
       }
     } else {
-      console.log("No spoken words detected");
     }
   }
 
