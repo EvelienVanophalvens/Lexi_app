@@ -87,7 +87,7 @@ const HomeScreen = ({ navigation }) => {
 
 
         </View>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('CallLexi')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CallLexi')}>
           <View style={[styles.listItem, styles.friends]} >
           <View style={styles.leftContainer}>
             <Image source={require('../assets/img/profile.png')} style={ styles.img}/>
@@ -97,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
             <Image source={require('../assets/img/call.png')} style={ styles.icon}/>
           </View>
     </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
         <Text style={[styles.subTitle]}>Available</Text>
         <FlatList
           style={styles.friends}

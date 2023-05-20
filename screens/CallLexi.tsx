@@ -6,16 +6,18 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
+  AppState, 
 } from 'react-native';
 
 import Voice, {
   SpeechRecognizedEvent,
   SpeechResultsEvent,
   SpeechErrorEvent,
+  
 } from '@react-native-voice/voice';
 
 import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
-import { map, filter } from "rxjs/operators";
+import { map, filter, delay, timeInterval } from "rxjs/operators";
 import Sound from 'react-native-sound';
 import Torch from 'react-native-torch';
 import Tts from 'react-native-tts';
@@ -37,15 +39,30 @@ alarm.getNumberOfLoops
 
 
 
-function CallScreen({ route, navigation }) {
-  const { name, image } = route.params;
+function CallLexi({navigation }) {
 
   const { id } = useContext(UserContext);
 
-  const [codeWord, setCodeWord] = useState([]);
-  const [codeWordIndex, setCodeWordIndex] = useState();
 
- 
+  let intervalId: NodeJS.Timeout;
+  const [isTorchOn, setIsTorchOn] = useState(false);
+
+  Torch.switchState(isTorchOn);
+
+  const [orientation, setOrientation] = useState('');
+  const [recognized, setRecognized] = useState('');
+  const [volume, setVolume] = useState('');
+  const [error, setError] = useState('');
+  const [end, setEnd] = useState('');
+  const [started, setStarted] = useState('');
+  const [results, setResults] = useState([]);
+  const [partialResults, setPartialResults] = useState([]);
+
+  const [codeWord, setCodeWord] = useState([]);
+
+  let said = false;
+
+
   useEffect(() => {
     fetch('https://evelienvanophalvens.be/Lexi/allUserCodeWords.php', {
     method: 'POST',
@@ -69,52 +86,83 @@ function CallScreen({ route, navigation }) {
 }, []);
 
 
+  
 
 
-  const [isTorchOn, setIsTorchOn] = useState(false);
-
-  Torch.switchState(isTorchOn);
-
-  const [orientation, setOrientation] = useState('');
-  const [recognized, setRecognized] = useState('');
-  const [volume, setVolume] = useState('');
-  const [error, setError] = useState('');
-  const [end, setEnd] = useState('');
-  const [started, setStarted] = useState('');
-  const [results, setResults] = useState([]);
-  const [partialResults, setPartialResults] = useState([]);
-
-  setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
-
-  function getPhoneOrientation({ x, y, z }) {
-    const threshold = 2; // adjust this value as needed
-    if (Math.abs(x) > Math.abs(y)) {
-      setOrientation('landscape');
-      return "landscape";
-    }
-     else {
-      setOrientation('portrait');
-      return "portrait";
-    }
-  }
-
-  const subscription = accelerometer
-    .pipe(
-      map(({ x, y, z }) => ({
-        x: x.toFixed(2),
-        y: y.toFixed(2),
-        z: z.toFixed(2),
-        total: (x + y + z).toFixed(2),
-        orientation: getPhoneOrientation({ x, y, z }),
-      })),
-    )
-    .subscribe((accelerometer) => {
+  useEffect(() => {
+    Tts.getInitStatus().then(() => {
+      Tts.setDefaultLanguage('en-US');
+      Tts.setDefaultRate(0.5);
+      Tts.setDefaultPitch(1.0);
     });
+
+    const sentences = [
+      'Hello, I am Lexi',
+      'how was your day?',
+      'My day was great',
+      'This evening I will be making a delicious dinner',
+      'What are you going to do this evening?',
+      'Do you have things planned for the weekend?',
+      'I am going to the beach this weekend',
+    ];
+
+    let i = 0;
+
+    intervalId = setInterval(() => {
+      if (i < sentences.length) {
+        Tts.speak(sentences[i], {
+          androidParams: {
+            KEY_PARAM_STREAM: 'STREAM_VOICE_CALL',
+            },
+          }
+            );
+        i++;
+      }
+    }, 5000);
+
+  }, []);
+
+  useEffect(() => {
+    setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
+
+    function getPhoneOrientation({ x, y, z }) {
+      const threshold = 1; // adjust this value as needed
+      if (Math.abs(x) > Math.abs(y)) {
+        setOrientation('landscape');
+        return "landscape";
+      } else {
+        setOrientation('portrait');
+        return "portrait";
+      }
+    }
+
+    const subscription = accelerometer
+      .pipe(
+        map(({ x, y, z }) => ({
+          x: x.toFixed(1),
+          y: y.toFixed(1),
+          z: z.toFixed(1),
+          total: (x + y + z).toFixed(1),
+          orientation: getPhoneOrientation({ x, y, z }),
+        })),
+      )
+      .subscribe((accelerometer) => {
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
 
+
+
     
     if (orientation === "landscape") {
+
+      clearInterval(intervalId);
+
       alarm.stop();
 
       Tts.getInitStatus().then(() => {
@@ -122,14 +170,11 @@ function CallScreen({ route, navigation }) {
         Tts.setDefaultRate(0.5);
         Tts.setDefaultPitch(1.0);
         Tts.speak('Say one of your words!',{
-          androidParams: {
-            KEY_PARAM_STREAM: 'STREAM_VOICE_CALL',
-          },})
-          .then(() => {
-            _clearState();
-            Voice.start('en-US');
-            console.log("Voice started");
-          })
+        androidParams: {
+          KEY_PARAM_STREAM: 'STREAM_VOICE_CALL',
+          },
+        }
+          )
           .catch((error) => {
             console.log(error);
           });
@@ -138,7 +183,12 @@ function CallScreen({ route, navigation }) {
           Tts.requestInstallEngine();
         }
       });
-    } else {
+        _clearState();
+        Voice.start('en-US');
+        console.log("Voice started");
+    }
+    
+    else {
       Voice.stop();
     }
 
@@ -201,11 +251,6 @@ function CallScreen({ route, navigation }) {
     setPartialResults([]);
   };
 
-  let said = false;
-  
-  console.log(codeWord);
-  console.log(results[0]);
-
   if (codeWord && codeWord.length > 0) {
     if (results && results.length > 0) {
       const spokenWord = results[0];
@@ -218,14 +263,12 @@ function CallScreen({ route, navigation }) {
         _clearState();
         if(!said){
         console.log("you have said cancel");
-        Tts.speak('The call has been cancelled.' , {
+        Tts.speak('The call has been cancelled.', {
           androidParams: {
             KEY_PARAM_STREAM: 'STREAM_VOICE_CALL',
-          },})
-        .then(() => {
-
-
-        })
+          },
+        }
+          )
         .catch((error) => {
           console.log(error);
         }
@@ -255,6 +298,8 @@ function CallScreen({ route, navigation }) {
       alarm.setNumberOfLoops(-1);
   
         }else if(setting == 2){
+          clearInterval(intervalId);
+          Voice.stop();
           
           let isCodeExecuted = false;
 
@@ -264,10 +309,11 @@ function CallScreen({ route, navigation }) {
                 Tts.setDefaultLanguage('en-US');
                 Tts.setDefaultRate(0.5);
                 Tts.setDefaultPitch(1.0);
-                Tts.speak('You have called the police. Say cancel to cancel the call.' , {
+                Tts.speak('You have called the police. Say cancel to cancel the call.', {
                   androidParams: {
                     KEY_PARAM_STREAM: 'STREAM_VOICE_CALL',
-                  },})
+                  },
+                })
                   .catch((error) => {
                     console.log(error);
                   });
@@ -277,14 +323,18 @@ function CallScreen({ route, navigation }) {
                 }
               });
 
-              _clearState();
-              Voice.start('en-US');
-              console.log("Voice started");
           
             isCodeExecuted = true;
           }
-          
-          console.log("hello");
+
+          if (isCodeExecuted) {
+            _clearState();
+            // If code is already executed, start voice recognition again
+            setTimeout(() => {
+              Voice.start('en-US');
+              console.log('Voice started 2');
+            }, 7000);
+          }
 
           
 
@@ -294,21 +344,25 @@ function CallScreen({ route, navigation }) {
 
 
       } else {
+
+
       }
     } else {
     }
-  }
+  } 
+
+
 
 
 
   return (
     <View style={[styles.background, styles.View]}>
       <View style={styles.titlePurpleCalling}>
-        <Text style={[styles.titleWhite]}>{name}</Text>
+        <Text style={[styles.titleWhite]}>Lexi</Text>
         <Text style={styles.bodySmallWhite}>is calling</Text>
       </View>
       <View style={styles.viewStyle}>
-        <Image style={styles.callingImage} source={{ uri: "https://evelienvanophalvens.be/Lexi/uploads/" + image }} />
+        <Image style={styles.callingImage}  source={require('../assets/img/profileBig.png')} />
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <View  style={styles.decline} >
@@ -323,4 +377,4 @@ function CallScreen({ route, navigation }) {
 
 
 
-export default CallScreen;
+export default CallLexi;
