@@ -14,6 +14,7 @@ import FriendsScreen from './screens/Friends';
 import Tutorial1 from './screens/Tutorial1';
 import Tutorial2 from './screens/Tutorial2';
 import Tutorial3 from './screens/Tutorial3';
+import CallLexi from './screens/CallLexi';
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
         <Stack.Screen name="Call" component={CallScreen} options={{headerShown: false}}  />
         <Stack.Screen name="friendRequest" component={FriendRequest}  options={{headerShown: false}} />
         <Stack.Screen name="Friends" component={FriendsScreen} options={{headerShown: false}}  />
+        <Stack.Screen name="CallLexi" component={CallLexi} options={{headerShown: false}}  />
 
       </Stack.Navigator>
     </NavigationContainer>

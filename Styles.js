@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         marginRight:-40,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 220,
+        marginTop: 180,
 
     },
 
@@ -382,6 +382,13 @@ const styles = StyleSheet.create({
         width: 30,
         resizeMode: 'contain',
         marginRight: 20,
+    },
+
+    error: {
+        color: 'red',
+        marginBottom: 20,
+        fontFamily: 'Nunito-Regular',
+        fontSize: 15,
     },
     
 

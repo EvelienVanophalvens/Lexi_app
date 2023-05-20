@@ -10,6 +10,7 @@ const LoginScreen = ({ navigation }) => {
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
     const { id, setId } = useContext(UserContext);
 
   
@@ -48,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
                   setId(responseData.Data.id); // save the id in UserContext;
             } else {
               console.log("Incorrect username or password");
-              alert("Incorrect username or password 2");
+              setErrorMessage('Incorrect username or password');
             }
 
 
@@ -76,6 +77,9 @@ return(
             source={require('../assets/img/logo.png')}
         />
     </View>
+    {errorMessage ? (
+            <Text style={[styles.error]}>{errorMessage}</Text> // Render the error message if it exists
+          ) : null}
         <Text style={[styles.bodyBig, styles.label]}>Phone number</Text>
         <TextInput
             name={"phoneNumber"}
