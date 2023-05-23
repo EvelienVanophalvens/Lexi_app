@@ -122,7 +122,7 @@ const HomeScreen = ({ navigation }) => {
             id={item.id}
             name={item.firstname}
             image={item.profilePicture}
-            onSelectedFriend={(id) => navigation.navigate('Call', {id: id, name: item.firstname , image: item.profilePicture })}
+            onSelectedFriend={(id) => navigation.navigate('Home')}
           />
         )}
       />
