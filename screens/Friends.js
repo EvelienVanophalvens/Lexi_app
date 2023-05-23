@@ -12,6 +12,7 @@ const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
   const [searchValue , setSearchValue] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [message, setMessage] = useState('');
 
 
 
@@ -70,6 +71,12 @@ const FriendsScreen = ({ navigation }) => {
                 friend: Friendid,
                 id: id,
             }),
+        })  .then(response => response.json())
+        .then(data => {
+          setMessage('Friend request sent!');
+          setTimeout(() => {
+            setMessage('');
+          }, 3000);
         })
 
     }
@@ -105,14 +112,19 @@ const FriendsScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
+
+   
       <View style={[styles.View, styles.background]}>
+
         <View>
           <View style={styles.titlePurple}>
           <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+
               <Image style={styles.icon3} source={require('../assets/img/backArrow.png')} />
         </TouchableOpacity>
             <Text style={[styles.titleWhite, styles.titleMargin1]}>Friends</Text>
           </View>
+
         </View>
         <View style={styles.input3}>
             <Image source={require('../assets/img/search.png')} style={styles.searchIcon}/>
@@ -125,7 +137,11 @@ const FriendsScreen = ({ navigation }) => {
                 onSubmitEditing={search}
                 />
         </View>
-        <FlatList
+        {message !== "" && (
+  <Text style={[styles.body, styles.marginTop]}>{message}</Text>
+)}
+
+                      <FlatList
           style={styles.friends}
           numColumns={0}
           data={searchResults}
