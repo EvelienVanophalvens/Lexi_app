@@ -300,6 +300,16 @@ function CallScreen({ route, navigation }) {
   }
 
 
+  
+  const handleDecline = () => {
+    alarm.stop();
+    Torch.switchState(false);
+    Voice.stop();
+    _clearState();
+    navigation.navigate('Home');
+  };
+
+
 
   return (
     <View style={[styles.background, styles.View]}>
@@ -310,7 +320,7 @@ function CallScreen({ route, navigation }) {
       <View style={styles.viewStyle}>
         <Image style={styles.callingImage} source={{ uri: "https://evelienvanophalvens.be/Lexi/uploads/" + image }} />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={handleDecline}>
             <View  style={styles.decline} >
               <Image source={require('../assets/img/decline.png')} />
             </View>
