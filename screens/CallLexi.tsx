@@ -351,6 +351,18 @@ function CallLexi({navigation }) {
     }
   } 
 
+  const handleDecline = () => {
+    alarm.stop();
+    Torch.switchState(false);
+    Tts.stop(); // Stop TTS before stopping Voice recognition and clearing state
+    Voice.stop();
+    _clearState();
+    clearInterval(intervalId);
+    navigation.navigate('Home');
+  };
+
+  
+
 
 
 
@@ -364,7 +376,7 @@ function CallLexi({navigation }) {
       <View style={styles.viewStyle}>
         <Image style={styles.callingImage}  source={require('../assets/img/profileBig.png')} />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={handleDecline}>
             <View  style={styles.decline} >
               <Image source={require('../assets/img/decline.png')} />
             </View>

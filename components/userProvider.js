@@ -1,3 +1,5 @@
+//een component maken waardoor id gekend woord door alle component die omringd zijn met UserContext
+
 import React, { useState } from 'react';
 import UserContext from './userContext';
 

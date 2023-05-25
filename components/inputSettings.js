@@ -7,19 +7,24 @@ const Inputs = (props) => {
   const [inputValue, setInputValue] = useState();
   const [inputRef, setInputRef] = useState(null);
 
+  //het aanpasbaar maken van de instellingen
   const handlePress = () => {
     setEditable(!editable);
   };
 
+  //value van input veld ophalen
   const handleInputChange = (text) => {
     setInputValue(text);
   };
 
+  // aanpassing cancelen
   const handleCancelPress = () => {
     setEditable(false);
     setInputValue(props.value);
   };
 
+
+  // terug zetten naar niet aanpasbaar
   const handleUpdatePress = () => {
     setEditable(false);
     console.log(inputValue);
@@ -31,6 +36,8 @@ const Inputs = (props) => {
       inputRef.focus();
     }
   };
+
+  //er voor zorgen dat het juiste wordt getoont op de juiste manier
 
   useEffect(() => {
     focusInput();

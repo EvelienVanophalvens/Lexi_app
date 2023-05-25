@@ -4,6 +4,7 @@ import UserContext from '../components/userContext';
 import Friends from '../components/friends';
 import Switch from '../components/switch';
 import {styles} from '../Styles.js';
+import Tts from 'react-native-tts';
 
 
 const HomeScreen = ({ navigation }) => {

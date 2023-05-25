@@ -45,7 +45,7 @@ function CallScreen({ route, navigation }) {
   const [codeWord, setCodeWord] = useState([]);
   const [codeWordIndex, setCodeWordIndex] = useState();
 
- 
+ //haal de codewoorden op
   useEffect(() => {
     fetch('https://evelienvanophalvens.be/Lexi/allUserCodeWords.php', {
     method: 'POST',
@@ -84,6 +84,7 @@ function CallScreen({ route, navigation }) {
   const [results, setResults] = useState([]);
   const [partialResults, setPartialResults] = useState([]);
 
+  //telefoon in landscape of portrait (kijken om de 1s)
   setUpdateIntervalForType(SensorTypes.accelerometer, 1000); // defaults to 100ms
 
   function getPhoneOrientation({ x, y, z }) {
@@ -111,10 +112,12 @@ function CallScreen({ route, navigation }) {
     .subscribe((accelerometer) => {
     });
 
+
   useEffect(() => {
 
-    
+  
     if (orientation === "landscape") {
+      //alarm stoppen, start tts, daarna start voice recognition
       alarm.stop();
 
       Tts.getInitStatus().then(() => {
@@ -203,16 +206,21 @@ function CallScreen({ route, navigation }) {
 
   let said = false;
   
+
   console.log(codeWord);
   console.log(results[0]);
 
+
+  //kijken er een woord is ingesproken en of er woorden zijn ingesteld
   if (codeWord && codeWord.length > 0) {
     if (results && results.length > 0) {
       const spokenWord = results[0];
+      //kijken met welk codewoord het gesproken woord overeen komt
       const matchingCodeWord = codeWord.find((code) => code.codeWord.toLowerCase() === spokenWord.toLowerCase());
 
       console.log(spokenWord + ":spokenWord");
 
+      //wanneer cancel gezegt wordt moet het de call gecanceld worden
       if(spokenWord == "cancel"){
         Voice.stop();
         _clearState();
@@ -233,14 +241,17 @@ function CallScreen({ route, navigation }) {
         said = true;
       }
       }
-  
+      
       if (matchingCodeWord) {
+        //zorgen dat de juist actie wordt uitgevoerd bij het codewoord
         const codeWordId = matchingCodeWord.codeWordId;
         const setting = matchingCodeWord.setting;
 
         if(setting == 0){
+          //zaklamp laten aan gaan
           Torch.switchState(true);
         } else if(setting == 1){
+          //alarm geluid afspelen
             // loaded successfully
           console.log('duration in seconds: ' + alarm.getDuration() + 'number of channels: ' + alarm.getNumberOfChannels());
       
@@ -255,7 +266,7 @@ function CallScreen({ route, navigation }) {
       alarm.setNumberOfLoops(-1);
   
         }else if(setting == 2){
-          
+          //politie bellen
           let isCodeExecuted = false;
 
           if (!isCodeExecuted) {

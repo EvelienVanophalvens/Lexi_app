@@ -8,7 +8,7 @@ const Dropdown = (props) => {
   const [codeWord, setCodeWord] = useState([]);
   const options = props.options;
 
-   
+   //code woord ophalen in database
   useEffect(() => {
     fetch('https://evelienvanophalvens.be/Lexi/userCodeWords.php', {
     method: 'POST',
@@ -34,7 +34,7 @@ const Dropdown = (props) => {
 
 
 
-
+  //codewoord aanpassen
   const handleSelectOption = async (option) => {
     setSelectedOption(option);
     setDropdownVisible(false);
